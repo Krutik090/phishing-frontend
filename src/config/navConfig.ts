@@ -25,7 +25,7 @@ export const navItems = [
   },
   {
     title: 'Users & Groups',
-    href: '/users',
+    href: '/user-groups',
     icon: Users,
   },
   {

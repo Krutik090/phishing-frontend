@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
+import { UserGroups } from './pages/UserGroups';
 
 // Placeholder components for other routes
 const Campaigns = () => <div className="p-6">Campaigns Page</div>;
@@ -28,7 +29,7 @@ function App() {
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/templates" element={<EmailTemplates />} />
           <Route path="/pages" element={<LandingPages />} />
-          <Route path="/users" element={<Users />} />
+          <Route path="/user-groups" element={<UserGroups />} />
           <Route path="/profiles" element={<Profiles />} />
           <Route path="/imap" element={<IMAP />} />
           <Route path="/management" element={<Management />} />
