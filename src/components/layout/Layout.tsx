@@ -1,0 +1,30 @@
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Header } from './Header';
+import { Sidebar } from './Sidebar';
+
+export function Layout() {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header isSidebarOpen={isSidebarOpen} onMenuToggle={toggleSidebar} />
+      <Sidebar isSidebarOpen={isSidebarOpen} />
+      
+      <main 
+        className="
+          pt-16 transition-all duration-300
+          lg:ml-64
+        "
+      >
+        <div className="p-6">
+          <Outlet />
+        </div>
+      </main>
+    </div>
+  );
+}

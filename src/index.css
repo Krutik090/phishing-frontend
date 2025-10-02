@@ -6,34 +6,178 @@
   /* Light Mode */
   :root {
     --background: 0 0% 100%;
-    --foreground: 220 6% 26%;          /* Cape Cod as text */
-    --card: 165 6% 83%;                /* Tiara */
+    --foreground: 220 6% 26%; /* Cape Cod as text */
+    --card: 165 6% 83%; /* Tiara */
     --card-foreground: 220 6% 26%;
     --border: 165 6% 70%;
-
-    --primary: 8 70% 54%;              /* Valencia */
+    --primary: 8 70% 54%; /* Valencia */
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 30 48% 56%;           /* Antique Brass */
+    --secondary: 30 48% 56%; /* Antique Brass */
     --secondary-foreground: 0 0% 100%;
     --ring: 30 48% 56%; /* Antique Brass */
-
   }
 
   /* Dark Mode */
   .dark {
-    --background: 220 6% 16%;          /* Cape Cod deep */
-    --foreground: 165 6% 83%;          /* Tiara as text */
+    --background: 220 6% 16%; /* Cape Cod deep */
+    --foreground: 165 6% 83%; /* Tiara as text */
     --card: 220 6% 20%;
     --card-foreground: 165 6% 83%;
     --border: 220 6% 28%;
-
-    --primary: 8 70% 54%;              /* Valencia */
+    --primary: 8 70% 54%; /* Valencia */
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 30 48% 56%;           /* Antique Brass */
+    --secondary: 30 48% 56%; /* Antique Brass */
     --secondary-foreground: 0 0% 100%;
     --ring: 30 48% 66%; /* A slightly lighter Antique Brass for dark mode */
+  }
 
+  /* Smooth Scrolling */
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ========================================
+   CUSTOM SCROLLBAR STYLES - APPLICATION WIDE
+   ======================================== */
+
+/* Firefox Scrollbar (Standard Syntax) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c78554 #d0d4d3; /* Antique Brass thumb, Tiara track */
+}
+
+.dark * {
+  scrollbar-color: #c78554 #424544; /* Antique Brass thumb, Cape Cod track (dark) */
+}
+
+/* WebKit Scrollbar (Chrome, Safari, Edge, Opera) */
+
+/* REMOVE SCROLLBAR ARROWS - UP/DOWN BUTTONS */
+::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* Scrollbar Width */
+::-webkit-scrollbar {
+  width: 12px; /* Vertical scrollbar width */
+  height: 12px; /* Horizontal scrollbar height */
+}
+
+/* Scrollbar Track (Background) */
+::-webkit-scrollbar-track {
+  background: #d0d4d3; /* Tiara - Light mode */
+  border-radius: 10px;
+  margin: 4px 0;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #424544; /* Cape Cod - Dark mode */
+}
+
+/* Scrollbar Thumb (Draggable part) */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #c78554 0%, #da4d3a 100%); /* Antique Brass to Valencia gradient */
+  border-radius: 10px;
+  border: 2px solid #d0d4d3; /* Tiara border for spacing effect */
+  transition: all 0.3s ease;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  border-color: #424544; /* Cape Cod border in dark mode */
+}
+
+/* Scrollbar Thumb on Hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #da4d3a 0%, #c78554 100%); /* Reversed gradient on hover */
+  border-width: 1px;
+  cursor: pointer;
+}
+
+/* Scrollbar Thumb on Active (Click/Drag) */
+::-webkit-scrollbar-thumb:active {
+  background: #da4d3a; /* Valencia - Primary color */
+  border-width: 1px;
+}
+
+/* Scrollbar Corner (where horizontal and vertical scrollbars meet) */
+::-webkit-scrollbar-corner {
+  background: #d0d4d3; /* Tiara */
+}
+
+.dark ::-webkit-scrollbar-corner {
+  background: #424544; /* Cape Cod */
+}
+
+/* ========================================
+   ENHANCED SCROLLBAR FOR SPECIFIC SECTIONS
+   (For areas with heavy content like tables, logs)
+   ======================================== */
+
+/* Thin scrollbar for sidebar navigation */
+.sidebar-nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-nav::-webkit-scrollbar-button {
+  display: none; /* Remove arrows from sidebar */
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: #c78554; /* Solid Antique Brass */
+  border-radius: 10px;
+  border: none;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: #da4d3a; /* Valencia on hover */
+}
+
+/* Custom scrollbar for data tables and audit logs */
+.data-table::-webkit-scrollbar,
+.audit-log::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.data-table::-webkit-scrollbar-button,
+.audit-log::-webkit-scrollbar-button {
+  display: none; /* Remove arrows */
+}
+
+.data-table::-webkit-scrollbar-thumb,
+.audit-log::-webkit-scrollbar-thumb {
+  background: rgba(199, 133, 84, 0.8); /* Semi-transparent Antique Brass */
+  border-radius: 8px;
+}
+
+.data-table::-webkit-scrollbar-thumb:hover,
+.audit-log::-webkit-scrollbar-thumb:hover {
+  background: rgba(218, 77, 58, 0.9); /* Semi-transparent Valencia */
+}
+
+/* ========================================
+   ACCESSIBILITY & SECURITY ENHANCEMENTS
+   (SOC 2 & GDPR Compliance Considerations)
+   ======================================== */
+
+/* Ensure scrollbars are visible for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    transition: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  ::-webkit-scrollbar-thumb {
+    background: #da4d3a; /* Solid Valencia for better contrast */
+    border: 2px solid #424544; /* Cape Cod border */
   }
 }

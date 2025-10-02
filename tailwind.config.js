@@ -1,3 +1,5 @@
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class',
@@ -6,13 +8,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    // Make sure 'extend' is spelled correctly and the brackets are balanced
     extend: {
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', ...fontFamily.sans],  // Change this line
+      },
       colors: {
-
-        fontFamily: {
-          sans: ['Inter', ...fontFamily.sans],
-        },
         ring: 'hsl(var(--ring))',
         border: 'hsl(var(--border))',
         background: 'hsl(var(--background))',
@@ -33,4 +33,4 @@ export default {
     },
   },
   plugins: [],
-}
+};

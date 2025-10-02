@@ -1,45 +1,43 @@
-import { ThemeToggleButton } from './components/ThemeToggleButton';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './components/layout/Layout';
+import { Dashboard } from './pages/Dashboard';
+import { Login } from './pages/Login';
+
+// Placeholder components for other routes
+const Campaigns = () => <div className="p-6">Campaigns Page</div>;
+const EmailTemplates = () => <div className="p-6">Email Templates Page</div>;
+const LandingPages = () => <div className="p-6">Landing Pages</div>;
+const Users = () => <div className="p-6">Users & Groups</div>;
+const Profiles = () => <div className="p-6">Sending Profiles</div>;
+const IMAP = () => <div className="p-6">IMAP Settings</div>;
+const Management = () => <div className="p-6">User Management</div>;
+const Training = () => <div className="p-6">Training</div>;
+const Quiz = () => <div className="p-6">Quiz</div>;
+const Settings = () => <div className="p-6">Settings</div>;
 
 function App() {
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-300 font-sans">
-      <header className="p-4 border-b border-border flex justify-between items-center">
-        <h1 className="text-xl font-bold">Phishing Simulation Platform</h1>
-        <ThemeToggleButton />
-      </header>
+    <Router>
+      <Routes>
+        {/* Login Route - No Layout */}
+        <Route path="/login" element={<Login />} />
 
-      <main className="p-8 max-w-4xl mx-auto">
-        <div className="p-8 bg-card text-card-foreground rounded-lg mb-8 border border-border shadow-sm">
-          <h2 className="text-2xl font-semibold mb-2">Dashboard</h2>
-          <p>Welcome! Your campaign analytics will be displayed here.</p>
-        </div>
-
-        <div className="flex flex-wrap items-start gap-6">
-          {/* Action Buttons */}
-          <div className="flex gap-4">
-            <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold shadow-md 
-                               transition-all duration-200 ease-in-out
-                               hover:bg-primary/90 hover:-translate-y-0.5
-                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background">
-              Create Campaign
-            </button>
-
-            <button className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground font-semibold shadow-md
-                               transition-all duration-200 ease-in-out
-                               hover:bg-secondary/90 hover:-translate-y-0.5
-                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background">
-              Export Data
-            </button>
-          </div>
-
-          {/* Analytics Card */}
-          <div className="p-6 bg-card text-card-foreground rounded-xl border border-border shadow-lg flex-grow">
-            <h2 className="text-lg font-semibold">Analytics</h2>
-            <p className="mt-2">Your phishing campaign stats will appear here.</p>
-          </div>
-        </div>
-      </main>
-    </div>
+        {/* Protected Routes - With Layout */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/templates" element={<EmailTemplates />} />
+          <Route path="/pages" element={<LandingPages />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/profiles" element={<Profiles />} />
+          <Route path="/imap" element={<IMAP />} />
+          <Route path="/management" element={<Management />} />
+          <Route path="/training" element={<Training />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
