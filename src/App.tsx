@@ -7,10 +7,11 @@ import { EmailTemplate } from './pages/EmailTemplate';
 import { PhishingPages } from './pages/PhishingPage';
 import { SendingProfiles } from './pages/SendingProfiles';
 import { UserManagement } from './pages/UserManagement';
+import { ImapPage } from './pages/ImapPage';
+
+
 // Placeholder components for other routes
 const Campaigns = () => <div className="p-6">Campaigns Page</div>;
-const IMAP = () => <div className="p-6">IMAP Settings</div>;
-const Management = () => <div className="p-6">User Management</div>;
 const Training = () => <div className="p-6">Training</div>;
 const Quiz = () => <div className="p-6">Quiz</div>;
 const Settings = () => <div className="p-6">Settings</div>;
@@ -30,7 +31,7 @@ function App() {
           <Route path="/phishing-pages" element={<PhishingPages />} />
           <Route path="/user-groups" element={<UserGroups />} />
           <Route path="/profiles" element={<SendingProfiles />} />
-          <Route path="/imap" element={<IMAP />} />
+          <Route path="/imap" element={<ImapPage />} />
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/training" element={<Training />} />
           <Route path="/quiz" element={<Quiz />} />
