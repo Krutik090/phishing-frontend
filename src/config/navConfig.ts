@@ -40,7 +40,7 @@ export const navItems = [
   },
   {
     title: 'User Management',
-    href: '/management',
+    href: '/user-management',
     icon: UserCheck,
   },
   {
