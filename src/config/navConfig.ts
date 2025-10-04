@@ -19,8 +19,8 @@ export const navItems = [
     icon: Mail,
   },
   {
-    title: 'Landing Pages',
-    href: '/pages',
+    title: 'Phishing Pages',
+    href: '/phishing-pages',
     icon: FileText,
   },
   {

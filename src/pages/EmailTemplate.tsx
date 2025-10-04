@@ -228,28 +228,46 @@ export function EmailTemplate() {
                 className={`p-3 rounded-lg border cursor-pointer transition-all ${
                   selectedTemplate?.id === template.id
                     ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-card border-border hover:border-primary'
+                    : 'bg-card border-border hover:border-primary dark:text-card-foreground text-foreground'
                 }`}
                 onClick={() => editTemplate(template)}
               >
                 <div className="flex justify-between items-start mb-1">
-                  <h3 className="font-semibold truncate">{template.name}</h3>
+                  <h3 className={`font-semibold truncate ${
+                    selectedTemplate?.id === template.id 
+                      ? 'text-primary-foreground' 
+                      : 'dark:text-white text-gray-900'
+                  }`}>
+                    {template.name}
+                  </h3>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       deleteTemplate(template.id);
                     }}
-                    className="text-red-600 hover:text-red-800"
+                    className="text-red-600 hover:text-red-800 ml-2 flex-shrink-0"
                   >
                     <Trash className="w-4 h-4" />
                   </button>
                 </div>
-                <p className="text-xs opacity-75 truncate">{template.subject}</p>
-                <p className="text-xs opacity-50 mt-1">{template.createdAt}</p>
+                <p className={`text-xs truncate ${
+                  selectedTemplate?.id === template.id 
+                    ? 'text-primary-foreground opacity-75' 
+                    : 'dark:text-gray-300 text-gray-600'
+                }`}>
+                  {template.subject}
+                </p>
+                <p className={`text-xs mt-1 ${
+                  selectedTemplate?.id === template.id 
+                    ? 'text-primary-foreground opacity-50' 
+                    : 'dark:text-gray-400 text-gray-500'
+                }`}>
+                  {template.createdAt}
+                </p>
               </div>
             ))}
             {filteredTemplates.length === 0 && (
-              <p className="text-center text-gray-500 py-8">No templates found</p>
+              <p className="text-center text-gray-500 dark:text-gray-400 py-8">No templates found</p>
             )}
           </div>
         </div>
@@ -284,8 +302,8 @@ export function EmailTemplate() {
           {importOpen && (
             <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-border">
               <div className="flex justify-between items-center mb-2">
-                <h3 className="font-medium">Import Raw Email (RFC-822)</h3>
-                <button onClick={() => setImportOpen(false)}>
+                <h3 className="font-medium text-foreground">Import Raw Email (RFC-822)</h3>
+                <button onClick={() => setImportOpen(false)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -369,7 +387,7 @@ export function EmailTemplate() {
                 type="button"
                 onClick={() => setTab(0)}
                 className={`px-4 py-2 font-medium ${
-                  tab === 0 ? 'border-b-2 border-primary text-primary' : 'text-gray-500'
+                  tab === 0 ? 'border-b-2 border-primary text-primary' : 'text-gray-500 dark:text-gray-400'
                 }`}
               >
                 HTML Content
@@ -378,7 +396,7 @@ export function EmailTemplate() {
                 type="button"
                 onClick={() => setTab(1)}
                 className={`px-4 py-2 font-medium ${
-                  tab === 1 ? 'border-b-2 border-primary text-primary' : 'text-gray-500'
+                  tab === 1 ? 'border-b-2 border-primary text-primary' : 'text-gray-500 dark:text-gray-400'
                 }`}
               >
                 Plain Text
@@ -387,7 +405,7 @@ export function EmailTemplate() {
                 type="button"
                 onClick={() => setTab(2)}
                 className={`px-4 py-2 font-medium ${
-                  tab === 2 ? 'border-b-2 border-primary text-primary' : 'text-gray-500'
+                  tab === 2 ? 'border-b-2 border-primary text-primary' : 'text-gray-500 dark:text-gray-400'
                 }`}
               >
                 Attachments
@@ -436,7 +454,7 @@ export function EmailTemplate() {
                 >
                   <input {...getInputProps()} />
                   <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Drag & drop files or click to select
                   </p>
                 </div>
@@ -447,7 +465,7 @@ export function EmailTemplate() {
                         key={idx}
                         className="flex justify-between items-center p-2 bg-card rounded border border-border"
                       >
-                        <span className="text-sm truncate">
+                        <span className="text-sm truncate text-foreground">
                           {file.name} ({(file.size / 1024).toFixed(1)} KB)
                         </span>
                         <button

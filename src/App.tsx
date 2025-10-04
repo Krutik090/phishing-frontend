@@ -4,10 +4,10 @@ import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
 import { UserGroups } from './pages/UserGroups';
 import { EmailTemplate } from './pages/EmailTemplate';
+import { PhishingPages } from './pages/PhishingPage';
 
 // Placeholder components for other routes
 const Campaigns = () => <div className="p-6">Campaigns Page</div>;
-const LandingPages = () => <div className="p-6">Landing Pages</div>;
 const Profiles = () => <div className="p-6">Sending Profiles</div>;
 const IMAP = () => <div className="p-6">IMAP Settings</div>;
 const Management = () => <div className="p-6">User Management</div>;
@@ -27,7 +27,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/templates" element={<EmailTemplate />} />
-          <Route path="/pages" element={<LandingPages />} />
+          <Route path="/phishing-pages" element={<PhishingPages />} />
           <Route path="/user-groups" element={<UserGroups />} />
           <Route path="/profiles" element={<Profiles />} />
           <Route path="/imap" element={<IMAP />} />
