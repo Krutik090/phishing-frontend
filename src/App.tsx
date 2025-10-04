@@ -8,12 +8,12 @@ import { PhishingPages } from './pages/PhishingPage';
 import { SendingProfiles } from './pages/SendingProfiles';
 import { UserManagement } from './pages/UserManagement';
 import { ImapPage } from './pages/ImapPage';
-
+import { QuizAdminPage } from './pages/QuizAdminPage';
+import { PublicQuizPage } from './pages/PublicQuizPage';
 
 // Placeholder components for other routes
 const Campaigns = () => <div className="p-6">Campaigns Page</div>;
 const Training = () => <div className="p-6">Training</div>;
-const Quiz = () => <div className="p-6">Quiz</div>;
 const Settings = () => <div className="p-6">Settings</div>;
 
 function App() {
@@ -22,6 +22,8 @@ function App() {
       <Routes>
         {/* Login Route - No Layout */}
         <Route path="/login" element={<Login />} />
+        <Route path="/public-quiz/:id" element={<PublicQuizPage />} />
+        <Route path="/quiz-preview" element={<PublicQuizPage />} />
 
         {/* Protected Routes - With Layout */}
         <Route element={<Layout />}>
@@ -34,7 +36,7 @@ function App() {
           <Route path="/imap" element={<ImapPage />} />
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/training" element={<Training />} />
-          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz" element={<QuizAdminPage />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
