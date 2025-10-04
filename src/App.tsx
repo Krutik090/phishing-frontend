@@ -3,12 +3,11 @@ import { Layout } from './components/layout/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Login } from './pages/Login';
 import { UserGroups } from './pages/UserGroups';
+import { EmailTemplate } from './pages/EmailTemplate';
 
 // Placeholder components for other routes
 const Campaigns = () => <div className="p-6">Campaigns Page</div>;
-const EmailTemplates = () => <div className="p-6">Email Templates Page</div>;
 const LandingPages = () => <div className="p-6">Landing Pages</div>;
-const Users = () => <div className="p-6">Users & Groups</div>;
 const Profiles = () => <div className="p-6">Sending Profiles</div>;
 const IMAP = () => <div className="p-6">IMAP Settings</div>;
 const Management = () => <div className="p-6">User Management</div>;
@@ -27,7 +26,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/campaigns" element={<Campaigns />} />
-          <Route path="/templates" element={<EmailTemplates />} />
+          <Route path="/templates" element={<EmailTemplate />} />
           <Route path="/pages" element={<LandingPages />} />
           <Route path="/user-groups" element={<UserGroups />} />
           <Route path="/profiles" element={<Profiles />} />
