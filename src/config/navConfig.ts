@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Rocket,
+  FolderKanban,
   Mail,
   Globe,
   Users,
@@ -31,6 +32,8 @@ export const navGroups: NavGroup[] = [
     items: [
       { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
       { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
+      { title: 'Projects', icon: FolderKanban, href: '/projects' },
+
     ],
   },
   // Phishing Operations dropdown
@@ -58,6 +61,7 @@ export const navGroups: NavGroup[] = [
 export const navItems: NavItem[] = [
   { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
   { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
+  { title: 'Projects', icon: FolderKanban, href: '/projects' },
   { title: 'Email Templates', icon: Mail, href: '/templates' },
   { title: 'Phishing Pages', icon: Globe, href: '/phishing-pages' },
   { title: 'Target Groups', icon: Users, href: '/user-groups' },

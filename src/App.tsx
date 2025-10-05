@@ -15,6 +15,8 @@ import { CampaignsPage, CampaignProvider } from './pages/CampaignsPage';
 import { Settings } from './pages/Settings';
 import { CampaignResults } from './pages/CampaignResults';
 import { CampaignDetails } from './pages/CampaignDetails';
+import { ProjectsList } from './pages/ProjectsList';
+import { ProjectDetail } from './pages/ProjectDetail';
 
 // Placeholder components for other routes
 const Training = () => <div className="p-6">Training</div>;
@@ -34,8 +36,10 @@ function App() {
           <Route path="/campaigns" element={<CampaignsPage />} />
           <Route path="/campaigns/new" element={<CampaignWizard />} />
           <Route path="/campaigns/edit/:id" element={<CampaignWizard />} />
-          <Route path="campaigns/results" element={<CampaignResults />} />
-          <Route path="campaigns/results/:id" element={<CampaignDetails />} />
+          <Route path="/campaigns/results" element={<CampaignResults />} />
+          <Route path="/campaigns/results/:id" element={<CampaignDetails />} />
+          <Route path="/projects" element={<ProjectsList />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
           <Route path="/templates" element={<EmailTemplate />} />
           <Route path="/phishing-pages" element={<PhishingPages />} />
           <Route path="/user-groups" element={<UserGroups />} />
