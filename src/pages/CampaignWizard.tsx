@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { ArrowLeft, ArrowRight, Save, Rocket, AlertCircle } from "lucide-react";
+import { useForm, Controller } from "react-hook-form";
+import { ArrowLeft, ArrowRight, Save, Rocket, AlertCircle, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useCampaigns } from "./CampaignsPage";
+import { DateTimePicker } from "../components/ui/DateTimePicker";
 
 type CampaignFormData = {
   name: string;
@@ -9,7 +11,7 @@ type CampaignFormData = {
   emailTemplateId: string;
   phishingPageId: string;
   sendingProfileId: string;
-  targetGroupId: string;
+  targetGroupIds: string[]; // Changed to array
   projectId?: string;
   launchDateTime: string;
   autoLaunch: boolean;
@@ -24,8 +26,17 @@ const steps = [
   { id: 4, title: "Schedule & Launch" },
 ];
 
+const mockGroups = [
+  { id: "grp1", name: "All Employees" },
+  { id: "grp2", name: "IT Department" },
+  { id: "grp3", name: "Finance Team" },
+  { id: "grp4", name: "HR Department" },
+  { id: "grp5", name: "Marketing Team" },
+];
+
 export function CampaignWizard() {
   const navigate = useNavigate();
+  const { addCampaign } = useCampaigns();
   const [currentStep, setCurrentStep] = useState(1);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -33,11 +44,13 @@ export function CampaignWizard() {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<CampaignFormData>({
     defaultValues: {
       autoLaunch: true,
       emailIntervalSeconds: 2,
+      targetGroupIds: [],
     },
   });
 
@@ -48,14 +61,30 @@ export function CampaignWizard() {
   };
 
   const handleLaunch = () => {
-    // TODO: API call to create campaign
-    console.log("Launching campaign:", formData);
+    const newCampaign = {
+      id: `campaign-${Date.now()}`,
+      ...formData,
+      status: formData.autoLaunch ? 'scheduled' : 'draft',
+      emailsSent: 0,
+      emailsFailed: 0,
+      createdAt: new Date().toISOString(),
+    } as any;
+
+    addCampaign(newCampaign);
     navigate("/campaigns");
   };
 
   const handleSaveDraft = () => {
-    // TODO: API call to save draft
-    console.log("Saving draft:", formData);
+    const draftCampaign = {
+      id: `campaign-${Date.now()}`,
+      ...formData,
+      status: 'draft',
+      emailsSent: 0,
+      emailsFailed: 0,
+      createdAt: new Date().toISOString(),
+    } as any;
+
+    addCampaign(draftCampaign);
     navigate("/campaigns");
   };
 
@@ -68,9 +97,9 @@ export function CampaignWizard() {
   };
 
   return (
-    <div className="w-full px-6 py-8">
+    <div className="w-full px-6 py-8 min-h-full">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between">
         <button onClick={() => navigate("/campaigns")} className="flex items-center gap-2 text-foreground hover:text-primary">
           <ArrowLeft className="w-5 h-5" />
           <span>Back to Campaigns</span>
@@ -86,11 +115,10 @@ export function CampaignWizard() {
             <div key={step.id} className="flex items-center flex-1">
               <div className="flex flex-col items-center flex-1">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                    currentStep >= step.id
-                      ? "bg-primary text-white"
-                      : "bg-gray-200 text-gray-500"
-                  }`}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${currentStep >= step.id
+                    ? "bg-primary text-white"
+                    : "bg-gray-200 text-gray-500"
+                    }`}
                 >
                   {step.id}
                 </div>
@@ -199,25 +227,60 @@ export function CampaignWizard() {
             </div>
           )}
 
-          {/* Step 3: Target Group */}
+          {/* Step 3: Target Group (Multi-select) */}
           {currentStep === 3 && (
             <div className="space-y-6">
-              <h2 className="text-xl font-bold text-foreground mb-4">Select Target Group</h2>
-              <div>
-                <label className="block font-medium mb-1 text-foreground">
-                  Group / Target List <span className="text-destructive">*</span>
-                </label>
-                <select
-                  {...register("targetGroupId", { required: "Target group is required" })}
-                  className="w-full bg-input dark:bg-card border border-border rounded-md px-3 py-2 text-foreground dark:text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                >
-                  <option value="">-- Select Group --</option>
-                  <option value="grp1">All Employees</option>
-                  <option value="grp2">IT Department</option>
-                  <option value="grp3">Finance Team</option>
-                </select>
-                {errors.targetGroupId && <p className="text-destructive text-sm mt-1">{errors.targetGroupId.message}</p>}
-              </div>
+              <h2 className="text-xl font-bold text-foreground mb-4">Select Target Groups</h2>
+              <Controller
+                name="targetGroupIds"
+                control={control}
+                rules={{ required: "At least one target group is required" }}
+                render={({ field }) => (
+                  <div>
+                    <label className="block font-medium mb-2 text-foreground">
+                      Groups / Target Lists <span className="text-destructive">*</span>
+                    </label>
+                    <div className="space-y-2 border border-border rounded-lg p-4 bg-input dark:bg-card max-h-64 overflow-y-auto">
+                      {mockGroups.map((group) => (
+                        <label key={group.id} className="flex items-center gap-3 p-2 hover:bg-accent/20 rounded cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={field.value?.includes(group.id)}
+                            onChange={(e) => {
+                              const newValue = e.target.checked
+                                ? [...(field.value || []), group.id]
+                                : field.value?.filter((id) => id !== group.id);
+                              field.onChange(newValue);
+                            }}
+                            className="accent-primary w-4 h-4"
+                          />
+                          <span className="text-foreground">{group.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {errors.targetGroupIds && <p className="text-destructive text-sm mt-1">{errors.targetGroupIds.message}</p>}
+                    {field.value && field.value.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {field.value.map((groupId) => {
+                          const group = mockGroups.find((g) => g.id === groupId);
+                          return (
+                            <div key={groupId} className="flex items-center gap-1 px-3 py-1 bg-primary/20 text-primary rounded-full text-sm">
+                              {group?.name}
+                              <button
+                                type="button"
+                                onClick={() => field.onChange(field.value?.filter((id) => id !== groupId))}
+                                className="hover:text-destructive"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
             </div>
           )}
 
@@ -226,17 +289,23 @@ export function CampaignWizard() {
             <div className="space-y-6">
               <h2 className="text-xl font-bold text-foreground mb-4">Schedule & Launch</h2>
               <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block font-medium mb-1 text-foreground">
-                    Launch Date & Time <span className="text-destructive">*</span>
-                  </label>
-                  <input
-                    type="datetime-local"
-                    {...register("launchDateTime", { required: "Launch date is required" })}
-                    className="w-full bg-input dark:bg-card border border-border rounded-md px-3 py-2 text-foreground dark:text-card-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                  {errors.launchDateTime && <p className="text-destructive text-sm mt-1">{errors.launchDateTime.message}</p>}
-                </div>
+                {/* REPLACE THIS SECTION */}
+                <Controller
+                  name="launchDateTime"
+                  control={control}
+                  rules={{ required: "Launch date is required" }}
+                  render={({ field }) => (
+                    <DateTimePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      label="Launch Date & Time"
+                      required
+                      error={errors.launchDateTime?.message}
+                      minDateTime={new Date().toISOString()}
+                    />
+                  )}
+                />
+
                 <div>
                   <label className="block font-medium mb-1 text-foreground">
                     Email Interval (seconds) <span className="text-destructive">*</span>
@@ -280,11 +349,10 @@ export function CampaignWizard() {
             type="button"
             onClick={prevStep}
             disabled={currentStep === 1}
-            className={`px-6 py-2 rounded-lg font-semibold flex items-center gap-2 ${
-              currentStep === 1
-                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-gray-300 hover:bg-gray-400 text-gray-800"
-            }`}
+            className={`px-6 py-2 rounded-lg font-semibold flex items-center gap-2 ${currentStep === 1
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-gray-300 hover:bg-gray-400 text-gray-800"
+              }`}
           >
             <ArrowLeft className="w-5 h-5" /> Previous
           </button>
@@ -327,6 +395,7 @@ export function CampaignWizard() {
             <div className="space-y-2 mb-6 text-foreground">
               <p><strong>Campaign:</strong> {formData.name}</p>
               <p><strong>Launch:</strong> {new Date(formData.launchDateTime).toLocaleString()}</p>
+              <p><strong>Target Groups:</strong> {formData.targetGroupIds?.length || 0} selected</p>
               <p><strong>Email Interval:</strong> {formData.emailIntervalSeconds}s</p>
             </div>
             <div className="flex gap-3">

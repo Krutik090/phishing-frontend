@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, createContext, useContext } from "react";
 import { Plus, Eye, Copy, Trash2, FileEdit } from "lucide-react";
 import { Badge } from "../components/ui/Badge";
 import { DeleteModal } from "../components/ui/DeleteModal";
@@ -13,7 +13,7 @@ export type Campaign = {
   emailTemplateId: string;
   phishingPageId: string;
   sendingProfileId: string;
-  targetGroupId: string;
+  targetGroupIds: string[]; // Changed to array
   projectId?: string;
   launchDateTime: string;
   autoLaunch: boolean;
@@ -25,8 +25,46 @@ export type Campaign = {
   createdAt: string;
 };
 
-export function CampaignsPage() {
+// ===== CAMPAIGN CONTEXT =====
+type CampaignContextType = {
+  campaigns: Campaign[];
+  addCampaign: (campaign: Campaign) => void;
+  updateCampaign: (id: string, campaign: Campaign) => void;
+  deleteCampaign: (id: string) => void;
+};
+
+const CampaignContext = createContext<CampaignContextType | null>(null);
+
+export const useCampaigns = () => {
+  const context = useContext(CampaignContext);
+  if (!context) throw new Error("useCampaigns must be used within CampaignProvider");
+  return context;
+};
+
+export function CampaignProvider({ children }: { children: React.ReactNode }) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+
+  const addCampaign = (campaign: Campaign) => {
+    setCampaigns((prev) => [...prev, campaign]);
+  };
+
+  const updateCampaign = (id: string, campaign: Campaign) => {
+    setCampaigns((prev) => prev.map((c) => (c.id === id ? campaign : c)));
+  };
+
+  const deleteCampaign = (id: string) => {
+    setCampaigns((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  return (
+    <CampaignContext.Provider value={{ campaigns, addCampaign, updateCampaign, deleteCampaign }}>
+      {children}
+    </CampaignContext.Provider>
+  );
+}
+
+export function CampaignsPage() {
+  const { campaigns, deleteCampaign } = useCampaigns();
   const [deleteTarget, setDeleteTarget] = useState<Campaign | null>(null);
 
   const getStatusBadge = (status: CampaignStatus) => {
@@ -106,7 +144,7 @@ export function CampaignsPage() {
         item={deleteTarget?.name || ''}
         onClose={() => setDeleteTarget(null)}
         onConfirm={() => {
-          setCampaigns(campaigns.filter(c => c.id !== deleteTarget?.id));
+          if (deleteTarget) deleteCampaign(deleteTarget.id);
           setDeleteTarget(null);
         }}
       />

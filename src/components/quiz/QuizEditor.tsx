@@ -1,5 +1,5 @@
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { ArrowLeft, Save, Plus, Trash2, ChevronDown, ChevronUp, Eye } from "lucide-react";
+import { ArrowLeft, Save, Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import type { Quiz } from "../../pages/QuizAdminPage";
 
 function nanoid() {
@@ -13,7 +13,7 @@ interface QuizEditorProps {
   onPreview: (quiz: Quiz) => void;
 }
 
-export function QuizEditor({ quiz, onSave, onCancel, onPreview }: QuizEditorProps) {
+export function QuizEditor({ quiz, onSave, onCancel }: QuizEditorProps) {
   const {
     register,
     handleSubmit,
@@ -51,20 +51,20 @@ export function QuizEditor({ quiz, onSave, onCancel, onPreview }: QuizEditorProp
   };
 
   // Get correct number of options based on question type
-  const getOptionsForType = (type: string) => {
-    if (type === "truefalse") {
-      return [
-        { id: nanoid(), text: "True", isCorrect: false },
-        { id: nanoid(), text: "False", isCorrect: false },
-      ];
-    }
-    return [
-      { id: nanoid(), text: "", isCorrect: false },
-      { id: nanoid(), text: "", isCorrect: false },
-      { id: nanoid(), text: "", isCorrect: false },
-      { id: nanoid(), text: "", isCorrect: false },
-    ];
-  };
+  // const getOptionsForType = (type: string) => {
+  //   if (type === "truefalse") {
+  //     return [
+  //       { id: nanoid(), text: "True", isCorrect: false },
+  //       { id: nanoid(), text: "False", isCorrect: false },
+  //     ];
+  //   }
+  //   return [
+  //     { id: nanoid(), text: "", isCorrect: false },
+  //     { id: nanoid(), text: "", isCorrect: false },
+  //     { id: nanoid(), text: "", isCorrect: false },
+  //     { id: nanoid(), text: "", isCorrect: false },
+  //   ];
+  // };
 
   // Action Buttons Component (reused at top and bottom)
   const ActionButtons = () => (
