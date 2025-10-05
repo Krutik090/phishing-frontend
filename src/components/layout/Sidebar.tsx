@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import { navItems } from '../../config/navConfig';
-import { ShieldCheck, LogOut, ChevronLeft } from 'lucide-react';
+import { navGroups } from '../../config/navConfig';
+import { ShieldCheck, LogOut, ChevronLeft, ChevronDown, Settings, UserCog } from 'lucide-react';
+import { useState } from 'react';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -9,12 +10,22 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isSidebarOpen, collapsed, setCollapsed }: SidebarProps) {
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(['Operations', 'Learning']);
+
+  const toggleGroup = (groupTitle: string) => {
+    setExpandedGroups(prev =>
+      prev.includes(groupTitle)
+        ? prev.filter(g => g !== groupTitle)
+        : [...prev, groupTitle]
+    );
+  };
+
   return (
     <>
       {/* Mobile Overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="lg:hidden fixed inset-0 bg-black/60 z-30"
           onClick={() => {}}
         />
       )}
@@ -22,136 +33,158 @@ export function Sidebar({ isSidebarOpen, collapsed, setCollapsed }: SidebarProps
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-screen bg-[hsl(var(--card))] border-r border-border z-40
-          transition-all duration-300 ease-in-out
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          fixed inset-y-0 left-0 z-40 flex flex-col bg-card border-r border-border
+          transform transition-all duration-300 ease-in-out
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0
           ${collapsed ? 'lg:w-20' : 'lg:w-64'}
-          w-64 shadow-xl lg:shadow-none
         `}
       >
-        <div className="flex flex-col h-full">
-          {/* Sidebar Header */}
-          <div className="flex items-center justify-between h-16 px-4 border-b border-border flex-shrink-0">
-            {!collapsed && (
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                  <ShieldCheck className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-lg font-semibold text-card-foreground">
-                  Phish Admin
-                </span>
-              </div>
-            )}
-            
-            {/* Collapse Button (Desktop Only) */}
-            <button
-              onClick={() => setCollapsed(!collapsed)}
-              className="hidden lg:flex p-1.5 rounded-lg hover:bg-card-foreground/10 transition-colors"
-              aria-label="Toggle sidebar"
-            >
-              <ChevronLeft
-                className={`w-5 h-5 text-card-foreground transition-transform duration-300 ${
-                  collapsed ? 'rotate-180' : ''
-                }`}
-              />
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto overflow-x-hidden">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.href}
-                to={item.href}
-                className={({ isActive }) =>
-                  `
-                    group flex items-center gap-3 px-3 py-2.5 rounded-lg
-                    transition-all duration-200 relative
-                    ${
-                      isActive
-                        ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'text-card-foreground hover:bg-card-foreground/10'
-                    }
-                    ${collapsed ? 'justify-center' : ''}
-                  `
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {/* Active Indicator Bar */}
-                    {isActive && !collapsed && (
-                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-foreground rounded-r-full" />
-                    )}
-                    
-                    {/* Icon */}
-                    <item.icon 
-                      className={`
-                        w-5 h-5 flex-shrink-0 transition-transform duration-200
-                        ${!isActive && 'group-hover:scale-110'}
-                      `}
-                    />
-                    
-                    {/* Label */}
-                    {!collapsed && (
-                      <span className="font-medium text-sm whitespace-nowrap">
-                        {item.title}
-                      </span>
-                    )}
-
-                    {/* Tooltip for collapsed state */}
-                    {collapsed && (
-                      <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
-                        {item.title}
-                      </div>
-                    )}
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
-
-          {/* Divider */}
-          <div className="mx-3 border-t border-border flex-shrink-0" />
-
-          {/* Bottom Actions */}
-          <div className="p-3 space-y-1 flex-shrink-0">
-            {/* Logout */}
-            <button
-              className={`
-                group flex items-center gap-3 w-full px-3 py-2.5 rounded-lg
-                text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all
-                ${collapsed ? 'justify-center' : ''}
-              `}
-            >
-              <LogOut className="w-5 h-5 flex-shrink-0" />
-              {!collapsed && <span className="font-medium text-sm">Logout</span>}
-              
-              {collapsed && (
-                <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
-                  Logout
-                </div>
-              )}
-            </button>
-          </div>
-
-          {/* User Profile (Bottom) */}
+        {/* Header with Logo */}
+        <div className="flex h-16 items-center justify-between border-b border-border px-4">
           {!collapsed && (
-            <div className="p-3 border-t border-border flex-shrink-0">
-              <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-card-foreground/10 transition-colors cursor-pointer">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-medium flex-shrink-0">
-                  JD
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-card-foreground truncate">
-                    John Doe
-                  </p>
-                  <p className="text-xs text-gray-500 truncate">
-                    admin@company.com
-                  </p>
-                </div>
-              </div>
+            <div className="flex items-center gap-3">
+              <ShieldCheck className="h-8 w-8 text-primary" />
+              <h1 className="text-xl font-bold text-foreground">Phish Admin</h1>
             </div>
           )}
+          {collapsed && (
+            <div className="flex items-center justify-center w-full">
+              <ShieldCheck className="h-8 w-8 text-primary" />
+            </div>
+          )}
+
+          {/* Collapse Toggle (Desktop only) */}
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="hidden lg:block p-1.5 rounded-md hover:bg-accent transition-colors"
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            <ChevronLeft className={`w-5 h-5 text-foreground transition-transform ${collapsed ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+
+        {/* Main Navigation */}
+        <nav className="flex-1 overflow-y-auto p-4 space-y-2">
+          {navGroups.map((group, groupIndex) => {
+            // Standalone items (Dashboard, Campaigns)
+            if (!group.title) {
+              return (
+                <div key={groupIndex} className="space-y-1">
+                  {group.items.map((item) => (
+                    <NavLink
+                      key={item.href}
+                      to={item.href}
+                      className={({ isActive }) =>
+                        `flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all ${
+                          collapsed ? 'justify-center' : ''
+                        } ${
+                          isActive
+                            ? 'bg-primary/10 text-primary font-semibold'
+                            : 'text-foreground/70 hover:text-foreground hover:bg-accent'
+                        }`
+                      }
+                      title={collapsed ? item.title : ''}
+                    >
+                      <item.icon className="h-5 w-5 flex-shrink-0" />
+                      {!collapsed && <span>{item.title}</span>}
+                    </NavLink>
+                  ))}
+                </div>
+              );
+            }
+
+            // Grouped items with collapsible sections
+            const isExpanded = expandedGroups.includes(group.title);
+
+            return (
+              <div key={groupIndex} className="space-y-1">
+                {/* Group Header */}
+                {!collapsed && (
+                  <button
+                    onClick={() => toggleGroup(group.title)}
+                    className="w-full flex items-center justify-between px-3 py-2 text-sm font-semibold text-foreground/60 hover:text-foreground transition-colors"
+                  >
+                    <span>{group.title}</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                  </button>
+                )}
+
+                {/* Group Items */}
+                {(collapsed || isExpanded) && (
+                  <div className={collapsed ? 'space-y-1' : 'space-y-1 pl-2'}>
+                    {group.items.map((item) => (
+                      <NavLink
+                        key={item.href}
+                        to={item.href}
+                        className={({ isActive }) =>
+                          `flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
+                            collapsed ? 'justify-center' : ''
+                          } ${
+                            isActive
+                              ? 'bg-primary/10 text-primary font-medium'
+                              : 'text-foreground/70 hover:text-foreground hover:bg-accent'
+                          }`
+                        }
+                        title={collapsed ? item.title : ''}
+                      >
+                        <item.icon className="h-4 w-4 flex-shrink-0" />
+                        {!collapsed && <span className="text-sm">{item.title}</span>}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {/* User Management - Standalone */}
+          <NavLink
+            to="/user-management"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all ${
+                collapsed ? 'justify-center' : ''
+              } ${
+                isActive
+                  ? 'bg-primary/10 text-primary font-semibold'
+                  : 'text-foreground/70 hover:text-foreground hover:bg-accent'
+              }`
+            }
+            title={collapsed ? 'User Management' : ''}
+          >
+            <UserCog className="h-5 w-5 flex-shrink-0" />
+            {!collapsed && <span>User Management</span>}
+          </NavLink>
+        </nav>
+
+        {/* Footer - Settings & Logout */}
+        <div className="border-t border-border p-4 space-y-1">
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all ${
+                collapsed ? 'justify-center' : ''
+              } ${
+                isActive
+                  ? 'bg-primary/10 text-primary font-semibold'
+                  : 'text-foreground/70 hover:text-foreground hover:bg-accent'
+              }`
+            }
+            title={collapsed ? 'Settings' : ''}
+          >
+            <Settings className="h-5 w-5 flex-shrink-0" />
+            {!collapsed && <span>Settings</span>}
+          </NavLink>
+
+          <button
+            className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-destructive hover:bg-accent transition-all ${
+              collapsed ? 'justify-center' : ''
+            }`}
+            title={collapsed ? 'Logout' : ''}
+          >
+            <LogOut className="h-5 w-5 flex-shrink-0" />
+            {!collapsed && <span>Logout</span>}
+          </button>
         </div>
       </aside>
     </>

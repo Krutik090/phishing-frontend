@@ -4,6 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext.tsx';
+import { LayoutProvider } from './context/LayoutContext.tsx';
 
 const isDev = import.meta.env.DEV;
 
@@ -11,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter basename={isDev ? '/' : '/phishing-frontend'}>
       <ThemeProvider defaultTheme="dark" storageKey="phishing-app-theme">
-        <App />
+        <LayoutProvider defaultLayout="sidebar" storageKey="phishing-app-layout">
+          <App />
+        </LayoutProvider>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>

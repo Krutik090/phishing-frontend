@@ -12,10 +12,9 @@ import { QuizAdminPage } from './pages/QuizAdminPage';
 import { PublicQuizPage } from './pages/PublicQuizPage';
 import { CampaignWizard } from './pages/CampaignWizard';
 import { CampaignsPage, CampaignProvider } from './pages/CampaignsPage';
-
+import { Settings } from './pages/Settings';
 // Placeholder components for other routes
 const Training = () => <div className="p-6">Training</div>;
-const Settings = () => <div className="p-6">Settings</div>;
 
 function App() {
   return (

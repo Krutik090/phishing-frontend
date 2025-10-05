@@ -1,61 +1,70 @@
 import {
-  Shield, BarChart2, Mail, FileText, Users, Send, Wifi, UserCheck, BookOpen, PenSquare, Settings
+  LayoutDashboard,
+  Rocket,
+  Mail,
+  Globe,
+  Users,
+  Send,
+  Inbox,
+  BookOpen,
+  GraduationCap,
+  Settings,
+  UserCog,
 } from 'lucide-react';
 
-export const navItems = [
+export interface NavItem {
+  title: string;
+  icon: any;
+  href: string;
+}
+
+export interface NavGroup {
+  title: string;
+  items: NavItem[];
+}
+
+// Main navigation items (for sidebar and header)
+export const navGroups: NavGroup[] = [
+  // Standalone items (no dropdown)
   {
-    title: 'Dashboard',
-    href: '/',
-    icon: BarChart2,
+    title: '',
+    items: [
+      { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
+      { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
+    ],
   },
+  // Phishing Operations dropdown
   {
-    title: 'Campaigns',
-    href: '/campaigns',
-    icon: Shield,
+    title: 'Operations',
+    items: [
+      { title: 'Email Templates', icon: Mail, href: '/templates' },
+      { title: 'Phishing Pages', icon: Globe, href: '/phishing-pages' },
+      { title: 'Target Groups', icon: Users, href: '/user-groups' },
+      { title: 'Sending Profiles', icon: Send, href: '/profiles' },
+      { title: 'IMAP', icon: Inbox, href: '/imap' },
+    ],
   },
+  // Training dropdown
   {
-    title: 'Email Templates',
-    href: '/templates',
-    icon: Mail,
+    title: 'Learning',
+    items: [
+      { title: 'Training Modules', icon: BookOpen, href: '/training' },
+      { title: 'Quiz', icon: GraduationCap, href: '/quiz' },
+    ],
   },
-  {
-    title: 'Phishing Pages',
-    href: '/phishing-pages',
-    icon: FileText,
-  },
-  {
-    title: 'Users & Groups',
-    href: '/user-groups',
-    icon: Users,
-  },
-  {
-    title: 'Sending Profiles',
-    href: '/profiles',
-    icon: Send,
-  },
-  {
-    title: 'IMAP',
-    href: '/imap',
-    icon: Wifi,
-  },
-  {
-    title: 'User Management',
-    href: '/user-management',
-    icon: UserCheck,
-  },
-  {
-    title: 'Training',
-    href: '/training',
-    icon: BookOpen,
-  },
-  {
-    title: 'Quiz',
-    href: '/quiz',
-    icon: PenSquare,
-  },
-  {
-    title: 'Settings',
-    href: '/settings',
-    icon: Settings,
-  },
+];
+
+// Flat list for sidebar (backwards compatibility)
+export const navItems: NavItem[] = [
+  { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
+  { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
+  { title: 'Email Templates', icon: Mail, href: '/templates' },
+  { title: 'Phishing Pages', icon: Globe, href: '/phishing-pages' },
+  { title: 'Target Groups', icon: Users, href: '/user-groups' },
+  { title: 'Sending Profiles', icon: Send, href: '/profiles' },
+  { title: 'IMAP', icon: Inbox, href: '/imap' },
+  { title: 'Training', icon: BookOpen, href: '/training' },
+  { title: 'Quiz', icon: GraduationCap, href: '/quiz' },
+  { title: 'User Management', icon: UserCog, href: '/user-management' },
+  { title: 'Settings', icon: Settings, href: '/settings' },
 ];
