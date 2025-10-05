@@ -1,17 +1,15 @@
 import { Menu, X, Search, Moon, Sun } from 'lucide-react';
-import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { LayoutToggle } from '../ui/LayoutToggle';
 
 interface HeaderProps {
   isSidebarOpen: boolean;
   onMenuToggle: () => void;
-  collapsed: boolean; // Add this prop
+  collapsed: boolean;
 }
 
 export function Header({ isSidebarOpen, onMenuToggle, collapsed }: HeaderProps) {
   const { theme, setTheme } = useTheme();
-  const [showSearch, setShowSearch] = useState(false);
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -48,19 +46,20 @@ export function Header({ isSidebarOpen, onMenuToggle, collapsed }: HeaderProps) 
               type="text"
               placeholder="Search..."
               className="w-full pl-9 pr-4 py-2 text-sm bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all text-foreground"
-              onFocus={() => setShowSearch(true)}
-              onBlur={() => setShowSearch(false)}
             />
           </div>
         </div>
+
         {/* Right Side - Actions */}
         <div className="flex items-center gap-2">
           <LayoutToggle />
+          
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded-md hover:bg-accent transition-colors"
             aria-label="Toggle theme"
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           >
             {theme === 'dark' ? (
               <Sun className="w-5 h-5 text-foreground" />
@@ -71,7 +70,7 @@ export function Header({ isSidebarOpen, onMenuToggle, collapsed }: HeaderProps) 
 
           {/* User Profile */}
           <button className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-accent transition-colors">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-sm">
               JD
             </div>
             <span className="hidden md:inline text-sm font-medium text-foreground">
