@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   Rocket,
   FolderKanban,
+  ScrollText, // For Logs
   Mail,
   Globe,
   Users,
@@ -31,9 +32,8 @@ export const navGroups: NavGroup[] = [
     title: '',
     items: [
       { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
-      { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
       { title: 'Projects', icon: FolderKanban, href: '/projects' },
-
+      { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
     ],
   },
   // Phishing Operations dropdown
@@ -55,13 +55,22 @@ export const navGroups: NavGroup[] = [
       { title: 'Quiz', icon: GraduationCap, href: '/quiz' },
     ],
   },
+  // System & Management
+  {
+    title: 'System',
+    items: [
+      { title: 'Logs', icon: ScrollText, href: '/logs' },
+      { title: 'User Management', icon: UserCog, href: '/user-management' },
+      { title: 'Settings', icon: Settings, href: '/settings' },
+    ],
+  },
 ];
 
 // Flat list for sidebar (backwards compatibility)
 export const navItems: NavItem[] = [
   { title: 'Dashboard', icon: LayoutDashboard, href: '/' },
-  { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
   { title: 'Projects', icon: FolderKanban, href: '/projects' },
+  { title: 'Campaigns', icon: Rocket, href: '/campaigns' },
   { title: 'Email Templates', icon: Mail, href: '/templates' },
   { title: 'Phishing Pages', icon: Globe, href: '/phishing-pages' },
   { title: 'Target Groups', icon: Users, href: '/user-groups' },
@@ -69,6 +78,7 @@ export const navItems: NavItem[] = [
   { title: 'IMAP', icon: Inbox, href: '/imap' },
   { title: 'Training', icon: BookOpen, href: '/training' },
   { title: 'Quiz', icon: GraduationCap, href: '/quiz' },
+  { title: 'Logs', icon: ScrollText, href: '/logs' },
   { title: 'User Management', icon: UserCog, href: '/user-management' },
   { title: 'Settings', icon: Settings, href: '/settings' },
 ];

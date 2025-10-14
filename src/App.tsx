@@ -17,6 +17,7 @@ import { CampaignResults } from './pages/CampaignResults';
 import { CampaignDetails } from './pages/CampaignDetails';
 import { ProjectsList } from './pages/ProjectsList';
 import { ProjectDetail } from './pages/ProjectDetail';
+import { LogsPage } from './pages/LogsPage'; // Add this import
 
 // Placeholder components for other routes
 const Training = () => <div className="p-6">Training</div>;
@@ -45,6 +46,7 @@ function App() {
           <Route path="/user-groups" element={<UserGroups />} />
           <Route path="/profiles" element={<SendingProfiles />} />
           <Route path="/imap" element={<ImapPage />} />
+          <Route path="logs" element={<LogsPage />} />
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/training" element={<Training />} />
           <Route path="/quiz" element={<QuizAdminPage />} />
