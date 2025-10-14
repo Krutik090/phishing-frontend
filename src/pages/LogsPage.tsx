@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Download, RefreshCw } from 'lucide-react';
 import { mockLogs } from '../data/mockLogData.ts';
-import { LogFilters } from '../components/logs/LogFilters.tsx';
-import { LogsTable } from '../components/logs/LogsTable.tsx';
+import { LogFilters } from '../components/log/LogFilters.tsx';
+import { LogsTable } from '../components/log/LogsTable.tsx';
 import type { LogEntry } from '../data/mockLogData.ts';
 
 export function LogsPage() {
