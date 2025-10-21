@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { navGroups } from '../../config/navConfig';
-import { ShieldCheck, LogOut, ChevronLeft, ChevronDown, Settings, UserCog } from 'lucide-react';
+import { ShieldCheck, LogOut, ChevronLeft, ChevronDown, UserCog } from 'lucide-react';
 import { useState } from 'react';
 
 interface SidebarProps {
@@ -159,23 +159,6 @@ export function Sidebar({ isSidebarOpen, collapsed, setCollapsed }: SidebarProps
 
         {/* Footer - Settings & Logout */}
         <div className="border-t border-border p-4 space-y-1">
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all ${
-                collapsed ? 'justify-center' : ''
-              } ${
-                isActive
-                  ? 'bg-primary/10 text-primary font-semibold'
-                  : 'text-foreground/70 hover:text-foreground hover:bg-accent'
-              }`
-            }
-            title={collapsed ? 'Settings' : ''}
-          >
-            <Settings className="h-5 w-5 flex-shrink-0" />
-            {!collapsed && <span>Settings</span>}
-          </NavLink>
-
           <button
             className={`w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-destructive hover:bg-accent transition-all ${
               collapsed ? 'justify-center' : ''

@@ -60,7 +60,6 @@ export const navGroups: NavGroup[] = [
     title: 'System',
     items: [
       { title: 'Logs', icon: ScrollText, href: '/logs' },
-      { title: 'User Management', icon: UserCog, href: '/user-management' },
       { title: 'Settings', icon: Settings, href: '/settings' },
     ],
   },
